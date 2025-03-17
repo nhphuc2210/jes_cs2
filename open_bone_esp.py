@@ -25,6 +25,7 @@ DEFAULT_SETTINGS = {
     "esp_rendering": 1,
     "esp_mode": 0, # 0 chỉ vẽ kẻ địch, 1: vẽ kẻ địch và đồng đội
     "hp_bar_rendering": 1,  # 1: vẽ thanh máu, 0: không vẽ
+    "armor_bar_rendering": 0, # 1: vẽ giáp, 0: không vẽ
     "bons": 1,  # 1: vẽ xương, 0: không vẽ
     "nickname": 1,  # 1: vẽ tên, 0: không vẽ
     "weapon": 1,  # 1: vẽ vũ khí đang cầm, 0: không vẽ
@@ -339,11 +340,13 @@ def esp(scene, pm, client, offsets, client_dll, window_width, window_height, set
                     hp_bar_y_bottom = hp_bar_y_top + hp_bar_height - current_hp_height
                     hp_bar_current = scene.addRect(QtCore.QRectF(hp_bar_x_left, hp_bar_y_bottom, hp_bar_width, current_hp_height), QtGui.QPen(QtCore.Qt.NoPen),
                                                    QtGui.QColor(255, 0, 0))
+
+                if settings['armor_bar_rendering'] == 1:
                     max_armor_hp = 100
                     armor_hp_percentage = min(1.0, max(0.0, armor_hp / max_armor_hp))
                     armor_bar_width = 2
                     armor_bar_height = deltaZ
-                    armor_bar_x_left = hp_bar_x_left - armor_bar_width - 2
+                    armor_bar_x_left = leftX - 2 - 2 - armor_bar_width - 2
                     armor_bar_y_top = head_pos[1]
 
                     armor_bar = scene.addRect(QtCore.QRectF(armor_bar_x_left, armor_bar_y_top, armor_bar_width, armor_bar_height), QtGui.QPen(QtCore.Qt.NoPen),
