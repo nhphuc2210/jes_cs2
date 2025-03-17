@@ -45,3 +45,7 @@ python open_bone_esp.py
 ```
 
 ![img_3.png](img_3.png)
+
+## Bước 5: Giải trí sau một ngày làm việc mệt mõi
+
+![img_4.jpg](img_4.jpg)
