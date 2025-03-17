@@ -24,11 +24,11 @@ CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
 DEFAULT_SETTINGS = {
     "esp_rendering": 1,
     "esp_mode": 0, # 0 chỉ vẽ kẻ địch, 1: vẽ kẻ địch và đồng đội
-    "hp_bar_rendering": 1,  # vẽ thanh máu
-    "bons": 1,  # vẽ xương
-    "nickname": 1,  # vẽ tên
-    "weapon": 1,  # vẽ vũ khí đang cầm
-    "bomb_esp": 1,  # vẽ bom C4
+    "hp_bar_rendering": 1,  # 1: vẽ thanh máu, 0: không vẽ
+    "bons": 1,  # 1: vẽ xương, 0: không vẽ
+    "nickname": 1,  # 1: vẽ tên, 0: không vẽ
+    "weapon": 1,  # 1: vẽ vũ khí đang cầm, 0: không vẽ
+    "bomb_esp": 1,  # 1: vẽ bom C4, , 0: không vẽ
 
     "line_rendering": 0, # Inactive
     "head_hitbox_rendering": 0, # Inactive
@@ -515,7 +515,7 @@ def esp_main():
 if __name__ == "__main__":
     logging.info("Waiting cs2.exe")
     while True:
-        time.sleep(1)
+        time.sleep(10)
         try:
             pm = pymem.Pymem("cs2.exe")
             client = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll
