@@ -23,21 +23,22 @@ CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
 
 DEFAULT_SETTINGS = {
     "esp_rendering": 1,
-    "esp_mode": 1,
-    "line_rendering": 0,
-    "hp_bar_rendering": 1,
-    "head_hitbox_rendering": 0,
-    "bons": 1,
-    "nickname": 1,
-    "radius": 0,
-    "keyboard": "C",
-    "aim_active": 0,
-    "aim_mode": 1,
-    "aim_mode_distance": 1,
-    "trigger_bot_active": 0,
-    "keyboards": "X",
-    "weapon": 1,
-    "bomb_esp": 1
+    "esp_mode": 0, # 0 chỉ vẽ kẻ địch, 1: vẽ kẻ địch và đồng đội
+    "hp_bar_rendering": 1,  # vẽ thanh máu
+    "bons": 1,  # vẽ xương
+    "nickname": 1,  # vẽ tên
+    "weapon": 1,  # vẽ vũ khí đang cầm
+    "bomb_esp": 1,  # vẽ bom C4
+
+    "line_rendering": 0, # Inactive
+    "head_hitbox_rendering": 0, # Inactive
+    "radius": 0, # Inactive
+    "keyboard": "C", # Inactive
+    "aim_active": 0, # Inactive
+    "aim_mode": 1, # Inactive
+    "aim_mode_distance": 1, # Inactive
+    "trigger_bot_active": 0, # Inactive
+    "keyboards": "X", # Inactive
 }
 BombPlantedTime = 0
 BombDefusedTime = 0
