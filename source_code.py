@@ -12,16 +12,15 @@ import sys
 import time
 import logging
 import requests
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 # Define the folder where the script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = Path(__file__).resolve().parent
 session = requests.Session()
 
-CONFIG_DIR = os.path.join(os.environ['LOCALAPPDATA'], 'temp', 'PyIt')
-CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
-
-__version__=0.1
+__version__=202503181129
 
 DEFAULT_SETTINGS = {
     "esp_rendering": 1,
@@ -51,11 +50,6 @@ def load_settings():
     return DEFAULT_SETTINGS.copy()
 
 
-def save_settings(settings):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(settings, f, indent=4)
-
-
 def read_json_file(file_path):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -69,8 +63,8 @@ def read_json_file(file_path):
 
 
 def get_offsets_and_client_dll():
-    offsets_file = os.path.join(script_dir, "offsets.json")
-    client_dll_file = os.path.join(script_dir, "client_dll.json")
+    offsets_file = os.path.join(SCRIPT_DIR, "offsets.json")
+    client_dll_file = os.path.join(SCRIPT_DIR, "client_dll.json")
     offsets = read_json_file(offsets_file)
     client_dll = read_json_file(client_dll_file)
     return offsets, client_dll
@@ -113,9 +107,6 @@ class ESPWindow(QtWidgets.QWidget):
         hwnd = self.winId()
         win32gui.SetWindowLong(hwnd, win32con.GWL_EXSTYLE, win32con.WS_EX_LAYERED | win32con.WS_EX_TRANSPARENT)
 
-        self.file_watcher = QFileSystemWatcher([CONFIG_FILE])
-        self.file_watcher.fileChanged.connect(self.reload_settings)
-
         self.offsets, self.client_dll = get_offsets_and_client_dll()
         self.pm = pymem.Pymem("cs2.exe")
         self.client = pymem.process.module_from_name(self.pm.process_handle, "client.dll").lpBaseOfDll
@@ -137,15 +128,6 @@ class ESPWindow(QtWidgets.QWidget):
         self.last_time = time.time()
         self.frame_count = 0
         self.fps = 0
-
-    def reload_settings(self):
-        self.settings = load_settings()
-        self.window_width, self.window_height = get_window_size("Counter-Strike 2")
-        if self.window_width is None or self.window_height is None:
-            logging.info("Lỗi: cửa sổ trò chơi không được tìm thấy.")
-            sys.exit(1)
-        self.setGeometry(0, 0, self.window_width, self.window_height)
-        self.update_scene()
 
     def update_scene(self):
         if not self.is_game_window_active():
@@ -516,23 +498,29 @@ def esp_main():
     sys.exit(app.exec())
 
 
+def connect_cs2():
+    connected = False
+    process_name = 'cs2.exe'
+    while not connected:
+        try:
+            pm = pymem.Pymem(process_name)
+            client = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll
+            connected = True
+            logging.info(f"Connected to {process_name}.")
+        except Exception as e:
+            logging.info(f"Waiting for {process_name} to start...")
+            time.sleep(10)
+
 
 if __name__ == "__main__":
-    logging.info("Waiting cs2.exe")
-    while True:
-        time.sleep(10)
-        try:
-            pm = pymem.Pymem("cs2.exe")
-            client = pymem.process.module_from_name(pm.process_handle, "client.dll").lpBaseOfDll
-            break
-        except Exception as e:
-            pass
+    logging.info("All code are updated")
 
+    # check open cs2
+    connect_cs2()
+
+    # start wall
     logging.info("Starting Wall!")
-    time.sleep(2)
-
+    time.sleep(1)
     process2 = multiprocessing.Process(target=esp_main)
-
     process2.start()
-
     process2.join()
