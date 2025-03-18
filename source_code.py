@@ -482,7 +482,7 @@ def draw_bones(scene, pm, bone_matrix, view_matrix, width, height):
                 scene.addLine(
                     bone_positions[connection[0]][0], bone_positions[connection[0]][1],
                     bone_positions[connection[1]][0], bone_positions[connection[1]][1],
-                    QtGui.QPen(QtGui.QColor(255, 255, 255, 128), 1)
+                    QtGui.QPen(QtGui.QColor(255, 255, 255, 200), 1)
                 )
     except Exception as e:
         logging.info(f"Error drawing bones: {e}")
