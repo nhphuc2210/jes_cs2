@@ -8,10 +8,6 @@ from dataclasses import dataclass, field
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     level=logging.INFO,
-    # handlers=[
-    #     logging.FileHandler("update_script.log"),
-    #     logging.StreamHandler()
-    # ]
 )
 
 
@@ -103,7 +99,7 @@ class ScriptUpdater:
 
 if __name__ == "__main__":
     updater = ScriptUpdater()
-    updater.run(is_trigger_from_env=True)
+    updater.run(is_trigger_from_env=False)
 
 
 
