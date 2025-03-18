@@ -41,10 +41,8 @@ Lưu ý:
 2. Chế độ game ở dạng: cửa sổ toàn màn hình
 
 ```sh 
-python open_bone_esp.py
+python open_esp.py
 ```
-
-![img_3.png](img_3.png)
 
 ## Bước 5: Giải trí sau một ngày làm việc mệt mõi
 
