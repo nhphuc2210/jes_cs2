@@ -29,10 +29,12 @@ DEFAULT_SETTINGS = {
     "nickname": 1,  # 1: vẽ tên, 0: không vẽ
     "weapon": 1,  # 1: vẽ vũ khí đang cầm, 0: không vẽ
     "bomb_esp": 1,  # 1: vẽ bom C4, , 0: không vẽ
+    "crosshair": 1, # 1: vẽ crosshair
+    "crosshair_size": 10,
 
     "line_rendering": 0, # Inactive
     "head_hitbox_rendering": 0, # Inactive
-    "radius": 0, # Inactive
+    "radius": 15, # Inactive
     "keyboard": "C", # Inactive
     "aim_active": 0, # Inactive
     "aim_mode": 1, # Inactive
@@ -235,6 +237,7 @@ def esp(scene, pm, client, offsets, client_dll, window_width, window_height, set
         DefuseTime = pm.read_float(getC4BaseClass() + m_flDefuseLength) - (time.time() - BombDefusedTime)
         return DefuseTime if (isBeingDefused() and DefuseTime >= 0) else 0
 
+    # Crosshair drawing function (image-based only)
     bfont = QtGui.QFont('DejaVu Sans', 10, QtGui.QFont.Bold)
 
     if settings.get('bomb_esp', 0) == 1:
@@ -359,6 +362,29 @@ def esp(scene, pm, client, offsets, client_dll, window_width, window_height, set
                     weapon_name_y = head_pos[1] + deltaZ
                     weapon_name_text.setPos(weapon_name_x, weapon_name_y)
                     weapon_name_text.setDefaultTextColor(QtGui.QColor(255, 255, 255))
+
+                # Draw crosshair if enabled in settings
+                if settings.get('crosshair', 0) == 1:
+                    size = settings['crosshair_size']
+
+                    center_x = window_width / 2
+                    center_y = window_height / 2
+
+                    # Image-based crosshair
+                    crosshair_pixmap = QtGui.QPixmap((SCRIPT_DIR / 'chainlink_crosshair.png').as_posix())
+
+                    # Resize the pixmap based on the size argument
+                    scaled_pixmap = crosshair_pixmap.scaled(size * 2, size * 2, QtCore.Qt.KeepAspectRatio)
+                    crosshair_item = scene.addPixmap(scaled_pixmap)
+                    crosshair_item.setPos(center_x - scaled_pixmap.width() / 2,
+                                          center_y - scaled_pixmap.height() / 2)
+
+                if 'radius' in settings:
+                    if settings['radius'] != 0:
+                        center_x = window_width / 2
+                        center_y = window_height / 2
+                        screen_radius = settings['radius'] / 100.0 * min(center_x, center_y)
+                        ellipse = scene.addEllipse(QtCore.QRectF(center_x - screen_radius, center_y - screen_radius, screen_radius * 2, screen_radius * 2), QtGui.QPen(QtGui.QColor(255, 255, 255, 100), 0.5), QtCore.Qt.NoBrush)
 
             except:
                 return
