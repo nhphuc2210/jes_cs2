@@ -28,19 +28,19 @@ DEFAULT_SETTINGS = {
     "bons": 1,  # 1: vẽ xương, 0: không vẽ
     "nickname": 1,  # 1: vẽ tên, 0: không vẽ
     "weapon": 1,  # 1: vẽ vũ khí đang cầm, 0: không vẽ
-    "bomb_esp": 1,  # 1: vẽ bom C4, , 0: không vẽ
-    "crosshair": 1, # 1: vẽ crosshair
+    "bomb_esp": 1,  # 1: vẽ bom C4, 0: không vẽ
+    "crosshair": 1, # 1: vẽ crosshair, 0: không vẽ
     "crosshair_size": 10,
 
-    "line_rendering": 0, # Inactive
-    "head_hitbox_rendering": 0, # Inactive
-    "radius": 15, # Inactive
-    "keyboard": "C", # Inactive
-    "aim_active": 0, # Inactive
-    "aim_mode": 1, # Inactive
-    "aim_mode_distance": 1, # Inactive
-    "trigger_bot_active": 0, # Inactive
-    "keyboards": "X", # Inactive
+    "line_rendering": 0, # Inactive mode
+    "head_hitbox_rendering": 0, # Inactive mode
+    "radius": 0, # Inactive mode
+    "keyboard": "C", # Inactive mode
+    "aim_active": 0, # Inactive mode
+    "aim_mode": 1, # Inactive mode
+    "aim_mode_distance": 1, # Inactive mode
+    "trigger_bot_active": 0, # Inactive mode
+    "keyboards": "X", # Inactive mode
 }
 BombPlantedTime = 0
 BombDefusedTime = 0
@@ -379,12 +379,11 @@ def esp(scene, pm, client, offsets, client_dll, window_width, window_height, set
                     crosshair_item.setPos(center_x - scaled_pixmap.width() / 2,
                                           center_y - scaled_pixmap.height() / 2)
 
-                if 'radius' in settings:
-                    if settings['radius'] != 0:
-                        center_x = window_width / 2
-                        center_y = window_height / 2
-                        screen_radius = settings['radius'] / 100.0 * min(center_x, center_y)
-                        ellipse = scene.addEllipse(QtCore.QRectF(center_x - screen_radius, center_y - screen_radius, screen_radius * 2, screen_radius * 2), QtGui.QPen(QtGui.QColor(255, 255, 255, 100), 0.5), QtCore.Qt.NoBrush)
+                if settings.get('radius', 0) != 0:
+                    center_x = window_width / 2
+                    center_y = window_height / 2
+                    screen_radius = settings['radius'] / 100.0 * min(center_x, center_y)
+                    ellipse = scene.addEllipse(QtCore.QRectF(center_x - screen_radius, center_y - screen_radius, screen_radius * 2, screen_radius * 2), QtGui.QPen(QtGui.QColor(255, 255, 255, 100), 0.5), QtCore.Qt.NoBrush)
 
             except:
                 return
