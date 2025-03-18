@@ -10,6 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
+session = requests.Session()
 
 @dataclass
 class ScriptUpdater:
@@ -38,8 +39,8 @@ class ScriptUpdater:
         return f"{self.base_url}{self.file_name_source_code}"
 
     def download_file(self, url: str, local_file: Path) -> None:
-        logging.info(f"Downloading {url} to {local_file}...")
-        response = requests.get(url)
+        # logging.info(f"Downloading {url} to {local_file}...")
+        response = session.get(url)
         response.raise_for_status()
         local_file.write_text(response.text, encoding="utf-8")
         logging.info(f"Downloaded new version to {local_file}")
@@ -50,7 +51,7 @@ class ScriptUpdater:
         self.download_file(self.client_dll_url, self.local_client_dll_file)
 
     def get_remote_version(self, url: str) -> str:
-        response = requests.get(url)
+        response = session.get(url)
         response.raise_for_status()
         for line in response.text.splitlines():
             if line.strip().startswith("__version__"):
@@ -99,7 +100,7 @@ class ScriptUpdater:
 
 if __name__ == "__main__":
     updater = ScriptUpdater()
-    updater.run(is_trigger_from_env=False)
+    updater.run(is_trigger_from_env=True)
 
 
 

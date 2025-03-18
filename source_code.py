@@ -11,14 +11,12 @@ import os
 import sys
 import time
 import logging
-import requests
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Define the folder where the script is located
 SCRIPT_DIR = Path(__file__).resolve().parent
-session = requests.Session()
 
 __version__=202503181129
 
