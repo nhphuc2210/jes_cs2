@@ -29,7 +29,7 @@ DEFAULT_SETTINGS = {
     "nickname": 1,  # 1: vẽ tên, 0: không vẽ
     "weapon": 1,  # 1: vẽ vũ khí đang cầm, 0: không vẽ
     "bomb_esp": 1,  # 1: vẽ bom C4, 0: không vẽ
-    "crosshair": 1, # 1: vẽ crosshair, 0: không vẽ
+    "crosshair": 0, # 1: vẽ crosshair, 0: không vẽ
     "crosshair_size": 10,
 
     "line_rendering": 0, # Inactive mode
