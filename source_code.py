@@ -42,6 +42,8 @@ DEFAULT_SETTINGS = {
     "trigger_bot_active": 0, # Inactive mode
     "keyboards": "X", # Inactive mode
 }
+cross_hair = SCRIPT_DIR / 'crosshair_chainlink.png'
+
 BombPlantedTime = 0
 BombDefusedTime = 0
 
@@ -371,7 +373,7 @@ def esp(scene, pm, client, offsets, client_dll, window_width, window_height, set
                     center_y = window_height / 2
 
                     # Image-based crosshair
-                    crosshair_pixmap = QtGui.QPixmap((SCRIPT_DIR / 'chainlink_crosshair.png').as_posix())
+                    crosshair_pixmap = QtGui.QPixmap(cross_hair.as_posix())
 
                     # Resize the pixmap based on the size argument
                     scaled_pixmap = crosshair_pixmap.scaled(size * 2, size * 2, QtCore.Qt.KeepAspectRatio)
