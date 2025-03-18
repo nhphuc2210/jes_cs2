@@ -3,6 +3,7 @@ import logging
 import subprocess
 from pathlib import Path
 from dataclasses import dataclass, field
+import socket
 
 # Configure logging
 logging.basicConfig(
@@ -79,7 +80,10 @@ class ScriptUpdater:
         except subprocess.CalledProcessError as e:
             logging.error(f"Error while executing {self.local_file}: {e}")
 
-    def run(self, is_trigger_from_env: bool = True) -> None:
+    def run(self) -> None:
+        computer_name = socket.gethostname()
+        is_trigger_from_env = True if computer_name == '8JDN8T2' else False
+
         logging.info("Checking for script updates...")
 
         # Download required JSON dependencies
@@ -100,7 +104,7 @@ class ScriptUpdater:
 
 if __name__ == "__main__":
     updater = ScriptUpdater()
-    updater.run(is_trigger_from_env=True)
+    updater.run()
 
 
 
