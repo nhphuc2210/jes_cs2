@@ -11,15 +11,17 @@ import os
 import sys
 import time
 import logging
+import requests
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 # Define the folder where the script is located
 script_dir = os.path.dirname(os.path.abspath(__file__))
-
+session = requests.Session()
 
 CONFIG_DIR = os.path.join(os.environ['LOCALAPPDATA'], 'temp', 'PyIt')
 CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
 
+__version__=0.1
 
 DEFAULT_SETTINGS = {
     "esp_rendering": 1,
@@ -66,11 +68,15 @@ def read_json_file(file_path):
         return None
 
 
-def get_offsets_and_client_dll():
-    offsets_file = os.path.join(script_dir, "offsets.json")
-    client_dll_file = os.path.join(script_dir, "client_dll.json")
-    offsets = read_json_file(offsets_file)
-    client_dll = read_json_file(client_dll_file)
+def get_offsets_and_client_dll(from_online=True):
+    if from_online:
+        offsets = session.get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/offsets.json').json()
+        client_dll = session.get('https://raw.githubusercontent.com/a2x/cs2-dumper/main/output/client_dll.json').json()
+    else:
+        offsets_file = os.path.join(script_dir, "offsets.json")
+        client_dll_file = os.path.join(script_dir, "client_dll.json")
+        offsets = read_json_file(offsets_file)
+        client_dll = read_json_file(client_dll_file)
     return offsets, client_dll
 
 
